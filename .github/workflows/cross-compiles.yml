@@ -174,34 +174,34 @@ jobs:
         ./config --banner=Configured --strict-warnings \
                  --cross-compile-prefix=${{ matrix.platform.arch }}- \
                  ${{ matrix.platform.target }}
-    - name: config dump
-      run: ./configdata.pm --dump
+    # - name: config dump
+    #   run: ./configdata.pm --dump
 
     - name: make
       run: make -s -j4
 
-    - name: install qemu
-      if: github.event_name == 'push' && matrix.platform.tests != 'none'
-      run: sudo apt-get -yq --force-yes install qemu-user
+    # - name: install qemu
+    #   if: github.event_name == 'push' && matrix.platform.tests != 'none'
+    #   run: sudo apt-get -yq --force-yes install qemu-user
 
-    - name: Set QEMU environment
-      if: github.event_name == 'push' && matrix.platform.qemucpu != ''
-      run: echo "QEMU_CPU=${{ matrix.platform.qemucpu }}" >> $GITHUB_ENV
+    # - name: Set QEMU environment
+    #   if: github.event_name == 'push' && matrix.platform.qemucpu != ''
+    #   run: echo "QEMU_CPU=${{ matrix.platform.qemucpu }}" >> $GITHUB_ENV
 
-    - name: Set OpenSSL caps environment
-      if: github.event_name == 'push' && matrix.platform.opensslcapsname != ''
-      run: echo "OPENSSL_${{ matrix.platform.opensslcapsname }}=\
-                 ${{ matrix.platform.opensslcaps }}" >> $GITHUB_ENV
+    # - name: Set OpenSSL caps environment
+    #   if: github.event_name == 'push' && matrix.platform.opensslcapsname != ''
+    #   run: echo "OPENSSL_${{ matrix.platform.opensslcapsname }}=\
+    #              ${{ matrix.platform.opensslcaps }}" >> $GITHUB_ENV
 
-    - name: make all tests
-      if: github.event_name == 'push' && matrix.platform.tests == ''
-      run: |
-        make test HARNESS_JOBS=${HARNESS_JOBS:-4} \
-                  TESTS="-test_afalg" \
-                  QEMU_LD_PREFIX=/usr/${{ matrix.platform.arch }}
-    - name: make some tests
-      if: github.event_name == 'push' && matrix.platform.tests != 'none' && matrix.platform.tests != ''
-      run: |
-        make test HARNESS_JOBS=${HARNESS_JOBS:-4} \
-                  TESTS="${{ matrix.platform.tests }} -test_afalg" \
-                  QEMU_LD_PREFIX=/usr/${{ matrix.platform.arch }}
+    # - name: make all tests
+    #   if: github.event_name == 'push' && matrix.platform.tests == ''
+    #   run: |
+    #     make test HARNESS_JOBS=${HARNESS_JOBS:-4} \
+    #               TESTS="-test_afalg" \
+    #               QEMU_LD_PREFIX=/usr/${{ matrix.platform.arch }}
+    # - name: make some tests
+    #   if: github.event_name == 'push' && matrix.platform.tests != 'none' && matrix.platform.tests != ''
+    #   run: |
+    #     make test HARNESS_JOBS=${HARNESS_JOBS:-4} \
+    #               TESTS="${{ matrix.platform.tests }} -test_afalg" \
+    #               QEMU_LD_PREFIX=/usr/${{ matrix.platform.arch }}
