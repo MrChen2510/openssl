@@ -162,18 +162,23 @@ jobs:
             ${{ matrix.platform.libs }}
     - uses: actions/checkout@v3
 
-    - name: config with FIPS
-      if: matrix.platform.fips != 'no'
-      run: |
-        ./config --banner=Configured enable-fips \
+    - name: config
+      run:  |
+        ./config --banner=Configured --strict-warnings \
                  --cross-compile-prefix=${{ matrix.platform.arch }}- \
                  ${{ matrix.platform.target }}
-    - name: config without FIPS
-      if: matrix.platform.fips == 'no'
-      run: |
-        ./config --banner=Configured \
-                 --cross-compile-prefix=${{ matrix.platform.arch }}- \
-                 ${{ matrix.platform.target }}
+    # - name: config with FIPS
+    #   if: matrix.platform.fips != 'no'
+    #   run: |
+    #     ./config --banner=Configured --strict-warnings enable-fips \
+    #              --cross-compile-prefix=${{ matrix.platform.arch }}- \
+    #              ${{ matrix.platform.target }}
+    # - name: config without FIPS
+    #   if: matrix.platform.fips == 'no'
+    #   run: |
+    #     ./config --banner=Configured --strict-warnings \
+    #              --cross-compile-prefix=${{ matrix.platform.arch }}- \
+    #              ${{ matrix.platform.target }}
     # - name: config dump
     #   run: ./configdata.pm --dump
 
